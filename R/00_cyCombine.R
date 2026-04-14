@@ -110,8 +110,8 @@ batch_correct <- function(
       "No 'batch' column in data." = "batch" %in% names(object[[]]))
     assay <- layer
     .normalize <- normalize_seurat
-    .create_som <- create_som_sce
-    .correct_data <- correct_data_mat
+    # .create_som <- create_som_sce
+    # .correct_data <- correct_data_mat
 
     metadata <- object[[]]
   } else if (inherits(object, "SummarizedExperiment")) {
@@ -120,15 +120,15 @@ batch_correct <- function(
     if (!"batch" %in% colnames(SummarizedExperiment::colData(object)))
       stop("Batch column 'batch' not found in colData(object).")
     .normalize <- normalize_sce
-    .create_som <- create_som_sce
-    .correct_data <- correct_data_mat
+    # .create_som <- create_som_sce
+    # .correct_data <- correct_data_mat
 
     metadata <- SummarizedExperiment::colData(object)
   } else if (inherits(object, "data.frame")) {
     if (cluster_method == "leiden") stop("leiden clustering is only currently only supported for Seurat and SCE objects.")
     .normalize <- normalize
-    .create_som <- create_som
-    .correct_data <- correct_data
+    # .create_som <- create_som
+    # .correct_data <- correct_data
     metadata <- dplyr::select(object, dplyr::any_of(non_markers))
 
   } else if (!inherits(object, "matrix")) {
@@ -150,7 +150,9 @@ batch_correct <- function(
 
     message("Batch correcting using a SOM grid of dimensions ", xdim_i,"x", ydim_i)
 
-    if (is(label, "NULL")) {
+    if ((xdim_i * ydim_i == 1) & is(label, "NULL")) {
+      label_i <- 1
+    } else if (is(label, "NULL")) {
       # Normalize data
       normalized <- .normalize(
         object,
