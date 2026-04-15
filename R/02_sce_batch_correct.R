@@ -30,7 +30,7 @@ normalize_sce <- function(
     markers = NULL,
     assay = "exprs",
     norm_assay = "normalized",
-    norm_method = c("scale", "rank", "CLR", "lognorm", "none"),
+    norm_method = c("scale", "rank", "clr", "lognorm", "none"),
     ties.method = c("average", "first", "last", "random", "max", "min"),
     ...) {
 
@@ -67,7 +67,7 @@ normalize_sce <- function(
     norm_method,
     "rank" = message("Ranking expression data.."),
     "scale" = message("Scaling expression data.."),
-    "CLR" = message("CLR normalizing expression data.."),
+    "clr" = message("CLR normalizing expression data.."),
     "none" = return(sce)
   )
 
@@ -111,7 +111,7 @@ normalize_sce <- function(
         }
       }))
 
-    } else if (norm_method == "CLR") {
+    } else if (norm_method == "clr") {
       # Centered log-ratio transformation per feature within batch
       pseudocount <- 1e-6
       batch_data <- batch_data + pseudocount

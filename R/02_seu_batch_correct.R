@@ -13,7 +13,7 @@
 #' @inheritParams normalize
 #' @inheritParams normalize_sce
 #' @param object A Seurat object
-#' @param norm_method Normalization method: "scale" (Z-score), "CLR", "lognorm", "rank", or "qnorm" (Quantile normalization). Defaults to "scale".
+#' @param norm_method Normalization method: "scale" (Z-score), "clr", "lognorm", "rank", or "qnorm" (Quantile normalization). Defaults to "scale".
 #' @param layer Layer to use from the Seurat object
 #'
 #' @return A Seurat object with normalized data.
@@ -22,7 +22,7 @@ normalize_seurat <- function(
     markers = NULL,
     layer = "counts",
     assay = NULL,
-    norm_method = c("scale", "rank", "CLR", "lognorm", "qnorm", "none"),
+    norm_method = c("scale", "rank", "clr", "lognorm", "qnorm", "none"),
     ties.method = c("average", "first", "last", "random", "max", "min"),
     mc.cores = 1,
     pb = FALSE,
@@ -50,7 +50,7 @@ normalize_seurat <- function(
            message("Scaling expression data..")
            Seurat::ScaleData(object, features = markers, split.by = "batch")
            },
-         "CLR" = {
+         "clr" = {
            message("CLR normalizing expression data..")
            object <- Seurat::NormalizeData(object, normalization.method = "CLR", margin = 2)
            Seurat::ScaleData(object, features = markers, split.by = "batch")
@@ -398,7 +398,7 @@ batch_correct_seurat <- function(
     anchor = NULL,
     markers = NULL,
     layer = "counts",
-    norm_method = c("scale", "rank", "CLR", "lognorm", "qnorm", "none"),
+    norm_method = c("scale", "rank", "clr", "lognorm", "qnorm", "none"),
     ties.method = "average",
     mc.cores = 1,
     pb = FALSE) {
