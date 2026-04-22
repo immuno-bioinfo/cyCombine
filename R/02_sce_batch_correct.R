@@ -221,8 +221,7 @@ create_som_sce <- function(
         object,
         random.seed = seed,
         algorithm = 4,
-        resolution = resolution,
-        random.seed = seed)
+        resolution = resolution)
       label <- object$seurat_clusters
     }
 
