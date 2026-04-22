@@ -115,7 +115,7 @@ compute_cilisi <- function(
   if (downsample) {
     sample_size <- min(10000, table(df[,label_cols[[1]]]))
     df <- df |>
-      dplyr::group_by(label_cols) |>
+      dplyr::group_by(dplyr::all_of(label_cols)) |>
       dplyr::slice_sample(n = sample_size)
     }
   df_split <- split(df, df[[split_by]])
