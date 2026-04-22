@@ -211,7 +211,7 @@ create_som <- function(
     df,
     markers = NULL,
     seed = 473,
-    cluster_method = c("kohonen", "flowsom", "fusesom", "kmeans"),
+    cluster_method = c("kohonen", "flowsom", "fusesom", "leiden", "kmeans"),
     distf = c("euclidean", "sumofsquares", "cosine", "manhattan", "chebyshev"),
     rlen = 10,
     mode = c("online", "batch", "pbatch"),
