@@ -259,6 +259,7 @@ create_som_sce <- function(
 correct_data_mat <- function(
     mat,
     metadata,
+    markers = rownames(mat),
     covar = NULL,
     anchor = NULL,
     mc.cores = 1,
@@ -289,6 +290,7 @@ correct_data_mat <- function(
     stopifnot("The anchor column is missing" = anchor %in% colnames(metadata))
   }
 
+  if (length(markers) != nrow(mat)) message("Only correcting provided markers.")
 
   labels <- unique(metadata$label)
   corrected_data <- APPLY(
@@ -296,16 +298,18 @@ correct_data_mat <- function(
     function(lab) {
       label_cells <- which(metadata$label == lab)
       correct_label_mat(
-        mat[, label_cells],
+        mat[markers, label_cells],
         metadata = metadata[label_cells, ],
         ...
-      )}
+      )
+      }
   )
 
   corrected_data <- do.call(cbind, corrected_data)
+  mat[markers, rownames(corrected_data)] <- corrected_data
   # corrected_data <- corrected_data[, match(colnames(mat), colnames(corrected_data))]
 
-  return(corrected_data)
+  return(mat)
 }
 
 # Function to correct each group
