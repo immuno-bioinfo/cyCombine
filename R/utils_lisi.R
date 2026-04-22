@@ -72,7 +72,7 @@ compute_lisi <- function(
   # Bind back to original metadata
   # lisi <- df |>
   #   dplyr::bind_cols(lisi_results)
-    return(lisi_results)
+  return(lisi_results)
 }
 
 
@@ -98,6 +98,7 @@ compute_cilisi <- function(
     markers = NULL,
     label_cols = "batch",
     split_by = "label",
+    downsample = TRUE,
     metricsLabels = NULL,
     return_mean = TRUE,
     normalize = TRUE,
@@ -111,6 +112,12 @@ compute_cilisi <- function(
   }
 
   # Split data into a list of data.frames
+  if (downsample) {
+    sample_size <- min(10000, table(df[,label_cols[[1]]]))
+    df <- df |>
+      dplyr::group_by(label_cols) |>
+      dplyr::slice_sample(n = sample_size)
+    }
   df_split <- split(df, df[[split_by]])
 
   # names(data_split) <- unique(metricsLabels)

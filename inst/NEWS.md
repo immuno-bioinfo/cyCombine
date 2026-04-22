@@ -18,6 +18,8 @@
 * Added `cyCombine()` as an alias for `batch_correct`
 * Generalized main functions for all object types
 * Added `df2Seurat` function
+* Added option to set distance function in clustering
+* Added iLISI implementation
 
 # cyCombine 0.2.19
 
