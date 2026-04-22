@@ -306,7 +306,7 @@ correct_data_mat <- function(
   )
 
   corrected_data <- do.call(cbind, corrected_data)
-  mat[markers, rownames(corrected_data)] <- corrected_data
+  mat[markers, colnames(corrected_data)] <- corrected_data
   # corrected_data <- corrected_data[, match(colnames(mat), colnames(corrected_data))]
 
   return(mat)
