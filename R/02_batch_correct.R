@@ -211,7 +211,7 @@ create_som <- function(
     df,
     markers = NULL,
     seed = 473,
-    cluster_method = c("kohonen", "flowsom", "fusesom", "kmeans"),
+    cluster_method = c("kohonen", "flowsom", "fusesom", "leiden", "kmeans"),
     distf = c("euclidean", "sumofsquares", "cosine", "manhattan", "chebyshev"),
     rlen = 10,
     mode = c("online", "batch", "pbatch"),
@@ -323,7 +323,7 @@ create_som <- function(
     }
     )
 
-  return(labels)
+  return(as.factor(labels))
 }
 
 
@@ -398,7 +398,7 @@ correct_data <- function(df,
   if("id" %!in% colnames(df)) df$id <- seq_len(nrow(df))
 
   # Add label to df
-  if (length(label) == 1) {
+  if (length(label) == 1 & is(label, "character")) {
     cyCombine:::check_colname(colnames(df), label, "df")
   } else {
     df$label <- label

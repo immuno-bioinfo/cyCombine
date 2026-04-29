@@ -5,7 +5,7 @@
 \alias{non_markers}
 \title{Column names that are not cytometry markers}
 \format{
-An object of class \code{character} of length 16.
+An object of class \code{character} of length 17.
 }
 \usage{
 non_markers

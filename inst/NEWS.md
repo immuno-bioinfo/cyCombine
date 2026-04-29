@@ -10,14 +10,15 @@
 * Added binSize argument to detect_batch_effect* functions
 * batch_correct can now be parallelized with `mc.cores` parameter using `pbmcapply`, optionally without progressbar.
 * Data normalization prior to clustering is now also parallelizable
-* Added option for alternative clustering methods, such as `FlowSOM` and `kmeans`
+* Added option for alternative clustering methods, such as `FlowSOM`, `FuseSOM`, `leiden` (for SCE and Seurat objects), and `kmeans`
 * Vectorize and parallelize EMD computation
 * Remove dependency on sample column in correction
-* Included FuseSOM clustering
-* Included Leiden clustering for SCE and Seurat objects
 * Added `cyCombine()` as an alias for `batch_correct`
 * Generalized main functions for all object types
 * Added `df2Seurat` function
+* Added option to choose distance function in clustering
+* Added iLISI implementation
+* Created the auxiliary R package [scennep](https://github.com/shdam/scennep) that imputes missing transcripts in scRNA-seq for improved integration.
 
 # cyCombine 0.2.19
 

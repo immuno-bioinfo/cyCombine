@@ -30,7 +30,7 @@ normalize_sce <- function(
     markers = NULL,
     assay = "exprs",
     norm_assay = "normalized",
-    norm_method = c("scale", "rank", "CLR", "lognorm", "none"),
+    norm_method = c("scale", "rank", "clr", "lognorm", "none"),
     ties.method = c("average", "first", "last", "random", "max", "min"),
     ...) {
 
@@ -67,7 +67,7 @@ normalize_sce <- function(
     norm_method,
     "rank" = message("Ranking expression data.."),
     "scale" = message("Scaling expression data.."),
-    "CLR" = message("CLR normalizing expression data.."),
+    "clr" = message("CLR normalizing expression data.."),
     "none" = return(sce)
   )
 
@@ -111,7 +111,7 @@ normalize_sce <- function(
         }
       }))
 
-    } else if (norm_method == "CLR") {
+    } else if (norm_method == "clr") {
       # Centered log-ratio transformation per feature within batch
       pseudocount <- 1e-6
       batch_data <- batch_data + pseudocount
@@ -221,8 +221,7 @@ create_som_sce <- function(
         object,
         random.seed = seed,
         algorithm = 4,
-        resolution = resolution,
-        random.seed = seed)
+        resolution = resolution)
       label <- object$seurat_clusters
     }
 
@@ -260,6 +259,7 @@ create_som_sce <- function(
 correct_data_mat <- function(
     mat,
     metadata,
+    markers = rownames(mat),
     covar = NULL,
     anchor = NULL,
     mc.cores = 1,
@@ -290,6 +290,7 @@ correct_data_mat <- function(
     stopifnot("The anchor column is missing" = anchor %in% colnames(metadata))
   }
 
+  if (length(markers) != nrow(mat)) message("Only correcting provided markers.")
 
   labels <- unique(metadata$label)
   corrected_data <- APPLY(
@@ -297,16 +298,18 @@ correct_data_mat <- function(
     function(lab) {
       label_cells <- which(metadata$label == lab)
       correct_label_mat(
-        mat[, label_cells],
+        mat[markers, label_cells],
         metadata = metadata[label_cells, ],
         ...
-      )}
+      )
+      }
   )
 
   corrected_data <- do.call(cbind, corrected_data)
+  mat[markers, colnames(corrected_data)] <- corrected_data
   # corrected_data <- corrected_data[, match(colnames(mat), colnames(corrected_data))]
 
-  return(corrected_data)
+  return(mat)
 }
 
 # Function to correct each group
